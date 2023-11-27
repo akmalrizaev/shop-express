@@ -23,4 +23,16 @@ router.get('/add', (req, res) => {
   });
 });
 
+router.post('/add-products', userMiddleware, async (req, res) => {
+  const { title, description, image, price } = req.body;
+  if (!title || !description || !image || !price) {
+    req.flash('errorAddProducts', 'All fields is required');
+    res.redirect('/add');
+    return;
+  }
+
+  await Product.create({ ...req.body, user: req.userId });
+  res.redirect('/');
+});
+
 export default router;
