@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import authMiddleware from '../middleware/auth.js';
+import userMiddleware from '../middleware/user.js';
 import Product from '../models/Product.js';
 
 const router = Router();
@@ -17,10 +19,11 @@ router.get('/products', (req, res) => {
   });
 });
 
-router.get('/add', (req, res) => {
+router.get('/add', authMiddleware, (req, res) => {
   res.render('add', {
     title: 'Add product',
     isAdd: true,
+    errorAddProducts: req.flash('errorAddProducts'),
   });
 });
 
