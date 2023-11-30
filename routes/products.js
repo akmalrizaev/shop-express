@@ -5,10 +5,12 @@ import Product from '../models/Product.js';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+  const products = await Product.find().lean();
   res.render('index', {
     title: 'Shop | Express',
-    token: true,
+    products: products.reverse(),
+    userId: req.userId ? req.userId.toString() : null,
   });
 });
 
